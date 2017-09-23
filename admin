@@ -1,0 +1,56 @@
+admin
+	id (管理员ID)
+	name (管理员名称)
+	password (管理员密码)
+	email (管理员邮箱)
+	role_id (所属分组)
+	last_login_time (最近一次登录时间)
+
+role_auth
+	role_id
+	auth_id
+	
+auth
+	id
+	title
+	url
+	is_menu
+
+role
+	id
+	title
+
+
+
+active 活动表
+	id (活动ID)
+	uid	 (发起者ID)	 
+	title (活动标题)
+	type (活动类型)
+	start_time (活动开始时间)
+	end_time (活动结束时间)
+	join_end (报名截止时间)
+	sex_limit (性别限制)
+	target (目的地)
+	spend (每人花销)
+	face_pic_id (封面图ID)
+	
+
+active_member 活动参与表
+	id (主键ID)
+	active_id (活动ID)
+	total_member_num (总人数限制)
+	apply_member_num (已报名人数)
+
+active_tag 活动标签表
+	active_id (活动ID)
+	tag_id (标签ID)
+
+active_content 活动内容表
+	id (主键ID)
+	active_id (活动ID)
+	pic_id (图片ID)
+	title (内容标题)
+	content (内容)
+
+	
