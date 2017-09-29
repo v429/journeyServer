@@ -2,17 +2,16 @@
 
 namespace App\Http\Controllers\Backend;
 
-use App\Models\Admin;
-use Illuminate\Routing\Controller as BaseController;
+use App\Http\Controllers\Controller;
+use App\Models\RoleAuth;
+use App\Services\rbacService;
 
-class ActiveController extends BaseController 
+class ActiveController extends Controller
 {
 	
 	public function index()
 	{
-		$admin = Admin::getAdmin();
-
-		echo '<pre>';print_r($admin);
+		echo 'active list';
 	}
 
 }

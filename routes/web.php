@@ -13,6 +13,4 @@
 require_once('backend.php');
 
 
-Route::get('/', function () {
-    return view('welcome');
-});
+

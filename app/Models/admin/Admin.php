@@ -22,5 +22,16 @@ class Admin extends BaseModel
         return Admin::find($id);
     }
 
+    /**
+     * 根据名称或邮箱获取一个管理员
+     *
+     * @param $name
+     * @return mixed
+     */
+    public static function getByNameAndEmail($name)
+    {
+        return Admin::where('name', $name)->orWhere('email', $name)->first();
+    }
+
 
 }

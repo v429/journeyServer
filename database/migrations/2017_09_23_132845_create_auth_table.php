@@ -18,6 +18,8 @@ class CreateAuthTable extends Migration
             $table->string('title');
             $table->string('url');
             $table->tinyInteger('is_menu');
+            $table->integer('parent_id');
+            $table->integer('type');
             $table->timestamps();
             $table->softDeletes();
         });
