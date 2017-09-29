@@ -10,4 +10,20 @@ class Role extends BaseModel
     protected $primaryKey = 'id';
     use SoftDeletes;
 
+    /**
+     * 创建一个角色
+     *
+     * @param $title
+     * @return mixed
+     */
+    public static function createRole($title)
+    {
+        $role = new Role();
+        $role->title = $title;
+
+        $role->save();
+
+        return $role->id;
+    }
+
 }

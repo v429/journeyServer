@@ -8,6 +8,25 @@ class RoleAuth extends BaseModel
     protected $primaryKey = 'id';
 
     /**
+     * 创建一个RoleAuth
+     *
+     * @param $roleId
+     * @param $authId
+     * @return bool
+     */
+    public static function createRoleAuth($roleId, $authId)
+    {
+        $roleAuth = new RoleAuth();
+
+        $roleAuth->role_id = $roleId;
+        $roleAuth->auth_id = $authId;
+
+        $roleAuth->save();
+
+        return true;
+    }
+
+    /**
      * 根据RoleId获取当前角色所有权限id
      *
      * @param $roleId

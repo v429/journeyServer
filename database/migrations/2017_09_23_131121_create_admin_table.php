@@ -20,7 +20,7 @@ class CreateAdminTable extends Migration
             $table->string('password', 64);
             $table->string('email')->nullable();
             $table->integer('role_id');
-            $table->date('last_login_time');
+            $table->timestamp('last_login_time');
             $table->timestamps();
             $table->softDeletes();
         });
