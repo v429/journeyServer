@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Services\rbacService;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\View;
@@ -41,6 +42,9 @@ class Controller extends BaseController
      */
     protected function display($path = '', $toString = false)
     {
+        //渲染权限目录树
+        $this->data['menuTree'] = rbacService::getAuthTreeByAdminId();
+
         //渲染页面标题
         switch ($this->pageModule)
         {
@@ -48,7 +52,7 @@ class Controller extends BaseController
 
             default : $this->data['pageTitle'] = 'Admin | '. $this->pageTitle;
         }
-        //根目录
+        //根目录页面变量
         $this->data['BaseURL'] = URL::to('/');
 
         if ($toString)
@@ -78,9 +82,8 @@ class Controller extends BaseController
     protected function errorOut($content, $msg = '', $status = 500)
     {
         if (!$msg)
-        {
             $msg = $content;
-        }
+
         $this->output($content, $status, $msg);
     }
 

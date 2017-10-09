@@ -6,6 +6,7 @@ use App\Models\Admin;
 use App\Models\Auth;
 use App\Models\Role;
 use App\Models\RoleAuth;
+use Illuminate\Support\Facades\Cookie;
 
 class rbacService extends BaseService
 {
@@ -28,6 +29,52 @@ class rbacService extends BaseService
         $urls = self::getAuthUrlList($admin->role_id);
 
         return in_array(strtolower($url), $urls) ? true : false;
+    }
+
+    /**
+     * 根据管理员ID获取权限菜单树
+     *
+     * @param int $adminId
+     * @return array
+     */
+    public static function getAuthTreeByAdminId($adminId = 0)
+    {
+        $tree = Auth::getTree();
+
+        if (!$adminId)
+            $adminId = Cookie::get('admin_id');
+
+        if ($adminId)
+        {
+            $admin   = Admin::getAdmin($adminId);
+            if (!$admin)
+                return false;
+
+            //ROOT拥有所有权限
+            if (self::isRoot($adminId))
+            {
+                return $tree;
+            }
+            //获取该用户所拥有的权限树IDS
+            $authIds = RoleAuth::getAuthList($admin->role_id);
+            foreach ($tree as $key => $parent)
+            {
+                if (!in_array($parent['id'], $authIds))
+                {
+                    unset($tree[$key]);
+                    continue;
+                }
+
+                foreach($parent['childs'] as $k => $child)
+                {
+                    if (!in_array($child['id'], $authIds))
+                    {
+                        unset($tree[$key]['childs'][$k]);
+                    }
+                }
+            }
+            return $tree;
+        }
     }
 
     /**
@@ -56,9 +103,7 @@ class rbacService extends BaseService
         $admin = Admin::getAdmin($adminId);
 
         if ($admin->name == 'root')
-        {
             return true;
-        }
 
         unset($admin);
         return false;
