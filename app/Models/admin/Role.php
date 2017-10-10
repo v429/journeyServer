@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Common\Utils;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Role extends BaseModel
@@ -9,6 +10,21 @@ class Role extends BaseModel
     protected $table = 'role';
     protected $primaryKey = 'id';
     use SoftDeletes;
+
+    /**
+     * @param $roleId
+     * @return mixed
+     */
+    public static function getRole($roleId)
+    {
+        $role = self::find($roleId);
+        if (!$role)
+        {
+            Utils::errorLog('role not found', ['role_id' => $roleId]);
+            return false;
+        }
+        return $role;
+    }
 
     /**
      * 创建一个角色
@@ -25,5 +41,23 @@ class Role extends BaseModel
 
         return $role->id;
     }
+
+    /**
+     * 获取角色列表
+     *
+     * @param int $start
+     * @param int $limit
+     * @return mixed
+     */
+    public static function getRoleList($start = 0, $limit = 15)
+    {
+        $roleObj = Role::orderBy('id', 'desc');
+
+        if ($limit != -1)
+            return $roleObj->skip($start)->paginate($limit);
+
+        return $roleObj->get();
+    }
+
 
 }

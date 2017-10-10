@@ -35,6 +35,20 @@ class Admin extends BaseModel
     }
 
     /**
+     * 获取管理员列表
+     *
+     * @param $start
+     * @param int $limit
+     * @return mixed
+     */
+    public static function getAdminList($start = 0, $limit = 15)
+    {
+        $list = Admin::orderBy('id', 'desc')->skip($start)->take($limit)->paginate($limit);
+
+        return $list;
+    }
+
+    /**
      * 添加一个管理员
      *
      * @param $name
@@ -50,7 +64,7 @@ class Admin extends BaseModel
         $admin->password = $password;
         $admin->email = $email;
         $admin->role_id = $roleId;
-        $admin->last_login_time = 0;
+        $admin->last_login_time = null;
 
         if ($admin->save()) {
             return $admin->id;

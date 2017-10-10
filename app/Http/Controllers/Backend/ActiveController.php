@@ -14,9 +14,9 @@ class ActiveController extends Controller
 	
 	public function index()
 	{
-		$tree = rbacService::getAuthTreeByAdminId();
 
-		echo '<pre>';print_r($tree);
+		$this->pageTitle = '活动列表';
+		return $this->display('backend.active.list');
 	}
 
 }

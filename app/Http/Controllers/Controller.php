@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Services\AdminService;
 use App\Services\rbacService;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\URL;
@@ -49,11 +50,20 @@ class Controller extends BaseController
         switch ($this->pageModule)
         {
             case 'backend' : $this->data['pageTitle'] = 'Admin | '. $this->pageTitle;break;
-
             default : $this->data['pageTitle'] = 'Admin | '. $this->pageTitle;
         }
         //根目录页面变量
         $this->data['BaseURL'] = URL::to('/');
+
+        //获取当前登录用户信息
+        $this->data['loginAdminName'] = '';
+        $this->data['loginAdminId']   = '';
+        $loginInfo = AdminService::getLoginAdminInfo();
+        if ($loginInfo)
+        {
+            $this->data['loginAdminName'] = $loginInfo->name;
+            $this->data['loginAdminId']   = $loginInfo->id;
+        }
 
         if ($toString)
             return View::make($path, $this->data)->__toString();

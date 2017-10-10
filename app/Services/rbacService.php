@@ -32,6 +32,18 @@ class rbacService extends BaseService
     }
 
     /**
+     * 获取所有角色
+     *
+     * @return mixed
+     */
+    public static function getAllRole()
+    {
+        $roles = Role::getRoleList(0,-1);
+
+        return $roles;
+    }
+
+    /**
      * 根据管理员ID获取权限菜单树
      *
      * @param int $adminId

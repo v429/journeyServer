@@ -13,9 +13,9 @@ class Auth extends BaseModel
     const AUTH_TYPE_SEC   = 2; //二级菜单
 
     public static $initAuths = [
-        ['title'=>'用户管理', 'url' => 'backend/admin/list', 'is_menu' => 0, 'type' => self::AUTH_TYPE_FIRST, 'parent_id' => 0],
-        ['title'=>'用户列表', 'url' => 'backend/admin/list', 'is_menu' => 1, 'type' => self::AUTH_TYPE_SEC, 'parent_id' => 1],
-        ['title'=>'添加用户', 'url' => 'backend/admin/add', 'is_menu' => 1, 'type' => self::AUTH_TYPE_SEC, 'parent_id' => 1],
+        ['title'=>'管理员管理', 'url' => 'backend/admin/list', 'is_menu' => 0, 'type' => self::AUTH_TYPE_FIRST, 'parent_id' => 0],
+        ['title'=>'管理员列表', 'url' => 'backend/admin/list', 'is_menu' => 1, 'type' => self::AUTH_TYPE_SEC, 'parent_id' => 1],
+        ['title'=>'添加管理员', 'url' => 'backend/admin/add', 'is_menu' => 1, 'type' => self::AUTH_TYPE_SEC, 'parent_id' => 1],
         ['title'=>'活动管理', 'url' => 'backend/active/list', 'is_menu' => 0, 'type' => self::AUTH_TYPE_FIRST, 'parent_id' => 0],
         ['title'=>'活动列表', 'url' => 'backend/active/list', 'is_menu' => 1, 'type' => self::AUTH_TYPE_SEC, 'parent_id' => 4],
         ['title'=>'添加活动', 'url' => 'backend/active/add', 'is_menu' => 1, 'type' => self::AUTH_TYPE_SEC, 'parent_id' => 4],
