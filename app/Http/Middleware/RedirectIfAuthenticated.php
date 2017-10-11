@@ -23,7 +23,6 @@ class RedirectIfAuthenticated
         $adminId = $request->cookie('admin_id');
         $url = explode('?', $_SERVER['REQUEST_URI']);
 
-
         if (substr($url[0], -1) === '/')
         {
             $url = substr($url[0], 0, (strlen($url[0])-1));
@@ -31,6 +30,8 @@ class RedirectIfAuthenticated
             $url = $url[0];
         }
 
+        $url = substr($url, 1);
+        //echo '<pre>';print_r($url);exit;
         if (!$adminId || !rbacService::check($url, $adminId))
         {
             return Redirect::to('/backend/login');

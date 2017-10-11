@@ -28,7 +28,7 @@
                                 <td>{{$admin->name}}</td>
                                 <td>{{$admin->email}}</td>
                                 <td>{{$admin->last_login_time}}</td>
-                                <td><a href="{{$BaseURL}}/admin/update/{{$admin->id}}">编辑</a> | <a href="javascript:;" class="Js_delete_user" data="{{$admin->id}}">删除</a></td>
+                                <td><a href="{{$BaseURL}}/backend/admin/edit?id={{$admin->id}}">编辑</a> | <a href="javascript:;" class="Js_delete_user" data="{{$admin->id}}">删除</a></td>
                             </tr>
                         @endforeach
                         </tbody>

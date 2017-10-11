@@ -45,7 +45,7 @@
         ajax(url, data, function(res) {
             if (res.errCode == 0)
             {
-                window.location.href = base_url + '/backend/active/list';
+                window.location.href = base_url + 'backend/active/list';
             } else if (res.errCode == 500) {
                 alert(res.content);
             }

@@ -12,6 +12,17 @@ class Admin extends BaseModel
     protected $primaryKey = 'id';
     use SoftDeletes;
 
+    public static $addValidate = [
+        'name'     => 'required|max:16',
+        'password' => 'required|min:6|max:20',
+        'email'    => 'required|email',
+    ];
+
+    public static $editValidate = [
+        'name'     => 'required|max:16',
+        'email'    => 'required|email',
+    ];
+
     /**
      * 根据ID获取一个管理员
      *

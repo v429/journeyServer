@@ -72,6 +72,18 @@ class Controller extends BaseController
     }
 
     /**
+     * 跳转提示页面
+     */
+    protected function errPage($msg = '', $jump = '')
+    {
+        $this->pageTitle = '出错啦！';
+        $this->data['errMsg'] = $msg ? $msg : '未知错误';
+        $this->data['jump'] = $jump;
+
+        return $this->display('backend.error');
+    }
+
+    /**
      * 输出json响应
      */
     protected function output($data, $status, $error = '')

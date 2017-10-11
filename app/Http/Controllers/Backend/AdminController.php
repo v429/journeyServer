@@ -4,10 +4,13 @@ namespace App\Http\Controllers\Backend;
 
 use App\Common\Utils;
 use App\Http\Controllers\Controller;
+use App\Models\Admin;
 use App\Services\AdminService;
 use App\Services\rbacService;
+use Illuminate\Queue\RedisQueue;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Request;
 
 
@@ -89,6 +92,11 @@ class AdminController extends Controller
      */
     public function create(Request $request)
     {
+        $validater = Validator::make($request->all(), Admin::$addValidate);
+        if ($validater->fails())
+        {
+            $this->errorOut($validater->messages());
+        }
         $name          = $request->get('name');
         $password      = $request->get('password');
         $passwordAgain = $request->get('passwordAgain');
@@ -109,5 +117,58 @@ class AdminController extends Controller
 
         Utils::infoLog('add admin:' . $name . ' success', compact('name', 'password', 'email', 'roleId'));
         $this->successOut('添加成功');
+    }
+
+    /**
+     * 编辑管理员页面
+     *
+     * @param Request $request
+     * @return mixed
+     */
+    public function edit(Request $request)
+    {
+        $id = $request->get('id');
+
+        $admin = AdminService::getAdmin($id);
+        if (!$admin)
+        {
+            return $this->errPage('该管理员不存在!');
+        }
+
+        $roles = rbacService::getAllRole();
+
+        $this->data['admin'] = $admin;
+        $this->data['roles'] = $roles;
+        $this->pageTitle = '编辑管理员';
+        return $this->display('backend.admin.edit');
+    }
+
+    /**
+     * 编辑管理员接口
+     *
+     * @param Request $request
+     */
+    public function update(Request $request)
+    {
+        $validater = Validator::make($request->all(), Admin::$editValidate);
+        if ($validater->fails())
+        {
+            $this->errorOut($validater->messages());
+        }
+        $id            = $request->get('id');
+        $name          = $request->get('name');
+        $email         = $request->get('email');
+        $roleId        = $request->get('role_id');
+
+        //用户名已存在
+        if (AdminService::checkExist($name, $id))
+        {
+            $this->errorOut(['用户名已存在', 'error user name exist']);
+        }
+
+        AdminService::updateAdmin($id, $name, $email, $roleId);
+
+        Utils::infoLog('update admin:' . $name . ' success', compact('name', 'password', 'email', 'roleId'));
+        $this->successOut('编辑成功');
     }
 }

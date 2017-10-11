@@ -10,6 +10,24 @@ class AdminService extends BaseService
 {
 
     /**
+     * 根据ID获取ADMIN
+     *
+     * @param $id
+     * @return mixed
+     */
+    public static function getAdmin($id)
+    {
+        $admin = Admin::getAdmin($id);
+        if (!$admin)
+        {
+            Utils::errorLog('admin not found!id: ' . $id);
+            return false;
+        }
+
+        return $admin;
+    }
+
+    /**
      * 获取当前登录管理员信息
      *
      * @return bool
@@ -76,9 +94,13 @@ class AdminService extends BaseService
      * @param $name
      * @return bool
      */
-    public static function checkExist($name)
+    public static function checkExist($name, $id = 0)
     {
         $admin = Admin::where('name', $name)->first();
+
+        if ($admin && $id && $admin->id == $id) {
+            return false;
+        }
 
         return $admin ? true : false;
     }
