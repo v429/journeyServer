@@ -11,9 +11,6 @@ class AdminService extends BaseService
 
     /**
      * 根据ID获取ADMIN
-     *
-     * @param $id
-     * @return mixed
      */
     public static function getAdmin($id)
     {
@@ -29,8 +26,6 @@ class AdminService extends BaseService
 
     /**
      * 获取当前登录管理员信息
-     *
-     * @return bool
      */
     public static function getLoginAdminInfo()
     {
@@ -47,10 +42,6 @@ class AdminService extends BaseService
 
     /**
      * 获取管理员列表
-     *
-     * @param int $start
-     * @param int $limit
-     * @return mixed
      */
     public static function getList($start = 0, $limit = 15)
     {
@@ -90,9 +81,6 @@ class AdminService extends BaseService
 
     /**
      * 检查该用户是否存在
-     *
-     * @param $name
-     * @return bool
      */
     public static function checkExist($name, $id = 0)
     {
@@ -107,12 +95,6 @@ class AdminService extends BaseService
 
     /**
      * 添加一个管理员
-     *
-     * @param $name
-     * @param $password
-     * @param $email
-     * @param $roleId
-     * @return bool|mixed
      */
     public static function addAdmin($name, $password,$email, $roleId)
     {
@@ -130,12 +112,6 @@ class AdminService extends BaseService
 
     /**
      * 修改管理员属性
-     *
-     * @param $id
-     * @param $name
-     * @param $email
-     * @param $roleId
-     * @return bool
      */
     public static function updateAdmin($id, $name, $email, $roleId)
     {
@@ -144,16 +120,11 @@ class AdminService extends BaseService
 
     /**
      * 修改密码
-     *
-     * @param $id
-     * @param $oldPassword
-     * @param $newPassword
-     * @return bool
      */
     public static function updatePassword($id, $oldPassword, $newPassword)
     {
         $admin = Admin::getAdmin($id);
-
+        //验证原密码
         if ($admin->password == self::encryPassword($oldPassword))
         {
             if (Admin::updateAdminAttr($id, 'password', self::encryPassword($newPassword)))
@@ -166,14 +137,35 @@ class AdminService extends BaseService
 
     /**
      * 密码加密
-     *
-     * @param $password
-     * @return string
      */
     public static function encryPassword($password)
     {
         $result = md5($password) . env('APP_KEY');
 
         return md5($result);
+    }
+
+    /**
+     * 停用/启用管理员
+     */
+    public static function stopOrStartAdmin($id)
+    {
+        $admin = self::getAdmin($id);
+
+        if ($admin)
+        {
+            //停用
+            if ($admin->status == Admin::ADMIN_STATUS_ENABLE)
+            {
+                Admin::updateAdminAttr($id, 'status', Admin::ADMIN_STATUS_STOP);
+                return true;
+            }
+            //启用
+            Admin::updateAdminAttr($id, 'status', Admin::ADMIN_STATUS_ENABLE);
+            return true;
+        }
+        //管理员不存在
+        Utils::errorLog('admin not found in stopOrStartAdmin');
+        return false;
     }
 }

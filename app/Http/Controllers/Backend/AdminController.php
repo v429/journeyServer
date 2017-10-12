@@ -9,6 +9,7 @@ use App\Services\AdminService;
 use App\Services\rbacService;
 use Illuminate\Queue\RedisQueue;
 use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Request;
@@ -55,6 +56,18 @@ class AdminController extends Controller
         }
 
         $this->errorOut('登录失败，用户名密码错误', 'error login fail');
+    }
+
+    /**
+     * 登出
+     *
+     * @return mixed
+     */
+    public function logout()
+    {
+        $cookie = Cookie::forget('admin_id');
+
+        return Redirect::to('backend/login')->withCookie($cookie);
     }
 
     /**
@@ -171,5 +184,22 @@ class AdminController extends Controller
 
         Utils::infoLog('update admin:' . $name . ' success', compact('name', 'password', 'email', 'roleId'));
         $this->successOut('编辑成功');
+    }
+
+    /**
+     * 停用/启用管理员
+     *
+     * @param Request $request
+     */
+    public function changeStatus(Request $request)
+    {
+        $id     = $request->get('id');
+
+        $rs = AdminService::stopOrStartAdmin($id);
+        if ($rs)
+        {
+            $this->successOut('修改成功');
+        }
+        $this->errorOut('修改失败');
     }
 }

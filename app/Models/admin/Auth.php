@@ -49,8 +49,6 @@ class Auth extends BaseModel
 
     /**
      * 获取二级权限菜单树
-     *
-     * @return mixed
      */
     public static function getTree($showMenu = false)
     {
@@ -67,9 +65,6 @@ class Auth extends BaseModel
 
     /**
      * 根据类型获取所有auth列表
-     *
-     * @param int $type
-     * @return mixed
      */
     public static function getByType($type = 1, $toArray = true)
     {
@@ -80,9 +75,6 @@ class Auth extends BaseModel
 
     /**
      * 根据父级ID获取所有子AUTH列表
-     *
-     * @param $parentId
-     * @return mixed
      */
     public static function getChilds($parentId, $showMenu = false, $toArray = true)
     {
@@ -97,9 +89,6 @@ class Auth extends BaseModel
 
     /**
      * 根据ID数组获取权限url列表
-     *
-     * @param array $idList
-     * @return array
      */
     public static function getUrlsFromAuthIdList(array $idList)
     {

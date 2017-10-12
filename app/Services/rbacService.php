@@ -12,10 +12,6 @@ class rbacService extends BaseService
 {
     /**
      * 检查用户权限
-     *
-     * @param $url
-     * @param $adminId
-     * @return bool
      */
     public static function check($url, $adminId)
     {
@@ -33,8 +29,6 @@ class rbacService extends BaseService
 
     /**
      * 获取所有角色
-     *
-     * @return mixed
      */
     public static function getAllRole()
     {
@@ -45,9 +39,6 @@ class rbacService extends BaseService
 
     /**
      * 根据管理员ID获取权限菜单树
-     *
-     * @param int $adminId
-     * @return array
      */
     public static function getAuthTreeByAdminId($adminId = 0)
     {
@@ -91,9 +82,6 @@ class rbacService extends BaseService
 
     /**
      * 根据角色ID获取角色url权限列表
-     *
-     * @param $roleId
-     * @return array
      */
     public static function getAuthUrlList($roleId)
     {
@@ -105,10 +93,15 @@ class rbacService extends BaseService
     }
 
     /**
+     * 获取角色列表
+     */
+    public static function getRoleList($start = 0, $limit = 15)
+    {
+        return Role::getRoleList($start, $limit);
+    }
+
+    /**
      * 根据ID判断用户是否为root
-     *
-     * @param $adminId
-     * @return bool
      */
     public static function isRoot($adminId)
     {

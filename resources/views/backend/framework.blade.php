@@ -91,7 +91,7 @@
                 </header>
                 <div class="topnav">
                     <div class="btn-group">
-                        <a href="{{$BaseURL}}/admin/logout" data-toggle="tooltip" data-original-title="Logout" data-placement="bottom" class="btn btn-metis-1 btn-sm Js_logout">
+                        <a href="{{$BaseURL}}/backend/logout" data-toggle="tooltip" data-original-title="Logout" data-placement="bottom" class="btn btn-metis-1 btn-sm Js_logout">
                             <i class="fa fa-power-off"></i>
                             登出
                         </a>

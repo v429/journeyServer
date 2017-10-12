@@ -28,9 +28,6 @@ class Admin extends BaseModel
 
     /**
      * 根据ID获取一个管理员
-     *
-     * @param int $id
-     * @return mixed
      */
     public static function getAdmin($id = 1)
     {
@@ -39,9 +36,6 @@ class Admin extends BaseModel
 
     /**
      * 根据名称或邮箱获取一个管理员
-     *
-     * @param $name
-     * @return mixed
      */
     public static function getByNameAndEmail($name)
     {
@@ -50,10 +44,6 @@ class Admin extends BaseModel
 
     /**
      * 获取管理员列表
-     *
-     * @param $start
-     * @param int $limit
-     * @return mixed
      */
     public static function getAdminList($start = 0, $limit = 15)
     {
@@ -65,11 +55,7 @@ class Admin extends BaseModel
     /**
      * 添加一个管理员
      *
-     * @param $name
      * @param $password '加密后的密码字符串'
-     * @param $email
-     * @param $roleId
-     * @return bool|mixed
      */
     public static function addAdmin($name, $password, $email, $roleId)
     {
@@ -91,12 +77,6 @@ class Admin extends BaseModel
 
     /**
      * 修改管理员属性
-     *
-     * @param $id
-     * @param $name
-     * @param $email
-     * @param $roleId
-     * @return bool
      */
     public static function updateAdmin($id, $name, $email, $roleId)
     {
@@ -123,11 +103,6 @@ class Admin extends BaseModel
 
     /**
      * 修改用户单一属性
-     *
-     * @param $id
-     * @param $field
-     * @param $value
-     * @return bool
      */
     public static function updateAdminAttr($id, $field, $value)
     {

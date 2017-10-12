@@ -10,6 +10,7 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('backend/login', 'Backend\AdminController@login');
 require_once('backend.php');
 
 

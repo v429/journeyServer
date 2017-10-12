@@ -12,8 +12,7 @@ class Role extends BaseModel
     use SoftDeletes;
 
     /**
-     * @param $roleId
-     * @return mixed
+     * 获取角色
      */
     public static function getRole($roleId)
     {
@@ -28,9 +27,6 @@ class Role extends BaseModel
 
     /**
      * 创建一个角色
-     *
-     * @param $title
-     * @return mixed
      */
     public static function createRole($title)
     {
@@ -44,17 +40,13 @@ class Role extends BaseModel
 
     /**
      * 获取角色列表
-     *
-     * @param int $start
-     * @param int $limit
-     * @return mixed
      */
     public static function getRoleList($start = 0, $limit = 15)
     {
         $roleObj = Role::orderBy('id', 'desc');
 
         if ($limit != -1)
-            return $roleObj->skip($start)->paginate($limit);
+            return $roleObj->skip($start)->take($limit)->paginate();
 
         return $roleObj->get();
     }
