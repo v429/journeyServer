@@ -8,6 +8,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Admin extends BaseModel
 {
 
+    const ADMIN_STATUS_ENABLE = 1; //管理员状态启用
+    const ADMIN_STATUS_STOP   = 0; //管理员状态停用
+
     protected $table = 'admin';
     protected $primaryKey = 'id';
     use SoftDeletes;
@@ -76,6 +79,7 @@ class Admin extends BaseModel
         $admin->email = $email;
         $admin->role_id = $roleId;
         $admin->last_login_time = null;
+        $admin->status = self::ADMIN_STATUS_ENABLE;
 
         if ($admin->save()) {
             return $admin->id;

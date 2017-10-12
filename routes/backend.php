@@ -1,8 +1,10 @@
 <?php
-Route::post('backend/login', 'Backend\AdminController@doLogin');
-Route::get('backend/login', 'Backend\AdminController@login');
+/**
+ * 后台管理系统路由白名单
+ */
 
 Route::group(['prefix' => 'backend'], function() {
+	//需要登录权限验证的
 	Route::group(['middleware' => 'auth'], function(){
 		Route::get('/', 'Backend\ActiveController@index');
 		//活动相关
@@ -14,6 +16,10 @@ Route::group(['prefix' => 'backend'], function() {
 		Route::get('admin/edit', 'Backend\AdminController@edit');
 	});
 
+	//不需要登录权限验证
+	Route::get('login', 'Backend\AdminController@login');
+
+	Route::post('login', 'Backend\AdminController@doLogin');
 	Route::post('admin/create', 'Backend\AdminController@create');
 	Route::post('admin/update', 'Backend\AdminController@update');
 

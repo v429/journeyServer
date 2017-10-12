@@ -13,15 +13,22 @@ class Auth extends BaseModel
     const AUTH_TYPE_SEC   = 2; //二级菜单
 
     public static $initAuths = [
-        ['title'=>'管理员管理', 'url' => 'backend/admin/list', 'is_menu' => 0, 'type' => self::AUTH_TYPE_FIRST, 'parent_id' => 0],
+        ['title'=>'管理员管理', 'url' => 'backend/admin/list', 'is_menu' => 1, 'type' => self::AUTH_TYPE_FIRST, 'parent_id' => 0],
         ['title'=>'管理员列表', 'url' => 'backend/admin/list', 'is_menu' => 1, 'type' => self::AUTH_TYPE_SEC, 'parent_id' => 1],
         ['title'=>'添加管理员', 'url' => 'backend/admin/add', 'is_menu' => 1, 'type' => self::AUTH_TYPE_SEC, 'parent_id' => 1],
-        ['title'=>'活动管理', 'url' => 'backend/active/list', 'is_menu' => 0, 'type' => self::AUTH_TYPE_FIRST, 'parent_id' => 0],
-        ['title'=>'活动列表', 'url' => 'backend/active/list', 'is_menu' => 1, 'type' => self::AUTH_TYPE_SEC, 'parent_id' => 4],
-        ['title'=>'添加活动', 'url' => 'backend/active/add', 'is_menu' => 1, 'type' => self::AUTH_TYPE_SEC, 'parent_id' => 4],
-        ['title'=>'系统应用', 'url' => 'backend/auth/list', 'is_menu' => 0, 'type' => self::AUTH_TYPE_FIRST, 'parent_id' => 0],
-        ['title'=>'菜单列表', 'url' => 'backend/auth/list', 'is_menu' => 1, 'type' => self::AUTH_TYPE_SEC, 'parent_id' => 7],
-        ['title'=>'添加菜单', 'url' => 'backend/auth/add', 'is_menu' => 1, 'type' => self::AUTH_TYPE_SEC, 'parent_id' => 7],
+        ['title'=>'编辑管理员', 'url' => 'backend/admin/edit', 'is_menu' => 0, 'type' => self::AUTH_TYPE_SEC, 'parent_id' => 1],
+        ['title'=>'活动管理', 'url' => 'backend/active/list', 'is_menu' => 1, 'type' => self::AUTH_TYPE_FIRST, 'parent_id' => 0],
+        ['title'=>'活动列表', 'url' => 'backend/active/list', 'is_menu' => 1, 'type' => self::AUTH_TYPE_SEC, 'parent_id' => 5],
+        ['title'=>'添加活动', 'url' => 'backend/active/add', 'is_menu' => 1, 'type' => self::AUTH_TYPE_SEC, 'parent_id' => 5],
+        ['title'=>'编辑活动', 'url' => 'backend/active/edit', 'is_menu' => 0, 'type' => self::AUTH_TYPE_SEC, 'parent_id' => 5],
+        ['title'=>'系统应用', 'url' => 'backend/auth/list', 'is_menu' => 1, 'type' => self::AUTH_TYPE_FIRST, 'parent_id' => 0],
+        ['title'=>'菜单列表', 'url' => 'backend/auth/list', 'is_menu' => 1, 'type' => self::AUTH_TYPE_SEC, 'parent_id' => 9],
+        ['title'=>'添加菜单', 'url' => 'backend/auth/add', 'is_menu' => 1, 'type' => self::AUTH_TYPE_SEC, 'parent_id' => 9],
+        ['title'=>'编辑菜单', 'url' => 'backend/auth/edit', 'is_menu' => 0, 'type' => self::AUTH_TYPE_SEC, 'parent_id' => 9],
+        ['title'=>'角色管理', 'url' => 'backend/role/list', 'is_menu' => 1, 'type' => self::AUTH_TYPE_FIRST, 'parent_id' => 0],
+        ['title'=>'角色列表', 'url' => 'backend/role/list', 'is_menu' => 1, 'type' => self::AUTH_TYPE_SEC, 'parent_id' => 13],
+        ['title'=>'添加角色', 'url' => 'backend/role/add', 'is_menu' => 1, 'type' => self::AUTH_TYPE_SEC, 'parent_id' => 13],
+        ['title'=>'编辑角色', 'url' => 'backend/auth/edit', 'is_menu' => 0, 'type' => self::AUTH_TYPE_SEC, 'parent_id' => 13],
     ];
 
     /**
@@ -45,14 +52,14 @@ class Auth extends BaseModel
      *
      * @return mixed
      */
-    public static function getTree()
+    public static function getTree($showMenu = false)
     {
         $parents = self::getByType(self::AUTH_TYPE_FIRST);
 
         //获取下级菜单
         foreach ($parents as $key => $parent)
         {
-            $parents[$key]['childs'] = self::getChilds($parent['id']);
+            $parents[$key]['childs'] = self::getChilds($parent['id'], $showMenu);
         }
 
         return $parents;
@@ -77,9 +84,13 @@ class Auth extends BaseModel
      * @param $parentId
      * @return mixed
      */
-    public static function getChilds($parentId, $toArray = true)
+    public static function getChilds($parentId, $showMenu = false, $toArray = true)
     {
-        $childs = Auth::where('parent_id', $parentId)->get();
+        if (!$showMenu) {
+            $childs = Auth::where('parent_id', $parentId)->where('is_menu', 1)->get();
+        } else {
+            $childs = Auth::where('parent_id', $parentId)->get();
+        }
 
         return $toArray ? $childs->toArray() : $childs;
     }

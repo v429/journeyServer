@@ -77,7 +77,7 @@ class AdminService extends BaseService
     {
         $admin = Admin::getByNameAndEmail($name);
 
-        if ($admin && $admin->password == self::encryPassword($password))
+        if ($admin && $admin->password == self::encryPassword($password) && $admin->status == Admin::ADMIN_STATUS_ENABLE)
         {
             //修改最近登录时间
             Admin::updateAdminAttr($admin->id, 'last_login_time', date('Y-m-d H:i:s', time()));

@@ -137,6 +137,7 @@ class rbacService extends BaseService
             $root->email    = 'v429god@163.com';
             $root->role_id  = 1;
             $root->last_login_time = date('Y-m-d H:i:s', time());
+            $root->status = Admin::ADMIN_STATUS_ENABLE;
 
             $root->save();
 

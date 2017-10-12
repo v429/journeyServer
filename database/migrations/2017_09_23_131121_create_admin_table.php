@@ -16,10 +16,12 @@ class CreateAdminTable extends Migration
     {
         Schema::create('admin', function (Blueprint $table) {
             $table->increments('id');
+
             $table->string('name', 32);
             $table->string('password', 64);
             $table->string('email')->nullable();
             $table->integer('role_id');
+            $table->tinyInteger('status');
             $table->timestamp('last_login_time');
             $table->timestamps();
             $table->softDeletes();
