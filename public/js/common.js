@@ -15,6 +15,12 @@ function ajax(businessInterface, data, successFunction, property, object) {
 
 function checkError(errorMsg) {
     var alertMsg = '';
+    if (typeof errorMsg == 'string')
+    {
+        alert(errorMsg)
+        return ;
+    }
+
     $.each(errorMsg, function(i, msg){
         alertMsg += msg + '\n';
     });

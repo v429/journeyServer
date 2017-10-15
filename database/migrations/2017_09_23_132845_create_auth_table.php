@@ -20,6 +20,7 @@ class CreateAuthTable extends Migration
             $table->tinyInteger('is_menu');
             $table->integer('parent_id');
             $table->integer('type');
+            $table->integer('sort');
             $table->timestamps();
             $table->softDeletes();
         });

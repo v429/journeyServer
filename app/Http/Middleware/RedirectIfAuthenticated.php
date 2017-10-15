@@ -21,6 +21,10 @@ class RedirectIfAuthenticated
     public function handle($request, Closure $next, $guard = null)
     {
         $adminId = $request->cookie('admin_id');
+        if (!$adminId)
+        {
+            return Redirect::to('/backend/login');
+        }
         $url = explode('?', $_SERVER['REQUEST_URI']);
 
         if (substr($url[0], -1) === '/')
@@ -31,10 +35,10 @@ class RedirectIfAuthenticated
         }
 
         $url = substr($url, 1);
-        //echo '<pre>';print_r($url);exit;
+
         if (!$adminId || !rbacService::check($url, $adminId))
         {
-            return Redirect::to('/backend/login');
+           die('没有权限！');
         }
 
         return $next($request);

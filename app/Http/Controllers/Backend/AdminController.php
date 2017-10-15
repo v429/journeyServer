@@ -77,11 +77,10 @@ class AdminController extends Controller
      */
     public function adminList()
     {
-       // echo 'hello world';exit;
         $list = AdminService::getList(0, env('BACKEND_ITEM_PERPAGE'));
 
         $this->data['list'] = $list;
-        $this->data['pageTitle'] = '管理员列表';
+        $this->pageTitle = '管理员列表';
         return $this->display('backend.admin.list');
     }
 

@@ -33,9 +33,31 @@ class Role extends BaseModel
         $role = new Role();
         $role->title = $title;
 
-        $role->save();
+        if ($role->save()) {
+            return $role->id;
+        }
 
-        return $role->id;
+        return false;
+    }
+
+    /**
+     * 编辑角色
+     */
+    public static function updateRole($id, $name)
+    {
+        $role = Role::find($id);
+        if (!$role)
+        {
+            Utils::errorLog('role not found');
+            return false;
+        }
+
+        $role->title = $name;
+
+        if ($role->save()) return true;
+
+        Utils::errorLog('save role name error');
+        return false;
     }
 
     /**

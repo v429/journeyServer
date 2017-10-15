@@ -2,11 +2,13 @@
 
 namespace App\Services;
 
+use App\Common\Utils;
 use App\Models\Admin;
 use App\Models\Auth;
 use App\Models\Role;
 use App\Models\RoleAuth;
 use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\DB;
 
 class rbacService extends BaseService
 {
@@ -28,6 +30,32 @@ class rbacService extends BaseService
     }
 
     /**
+     * 获取角色详情
+     */
+    public static function getRole($id)
+    {
+        $role = Role::getRole($id);
+        if (!$role)
+        {
+            return false;
+        }
+
+        $auths = RoleAuth::getAuthList($id);
+
+        return ['role' => $role, 'auths' => $auths];
+    }
+
+    /**
+     * 获取权限详情
+     */
+    public static function getAuth($id)
+    {
+        $auth = Auth::getAuth($id);
+
+        return $auth;
+    }
+
+    /**
      * 获取所有角色
      */
     public static function getAllRole()
@@ -35,6 +63,14 @@ class rbacService extends BaseService
         $roles = Role::getRoleList(0,-1);
 
         return $roles;
+    }
+
+    /**
+     * 获取所有权限树
+     */
+    public static function getTree()
+    {
+        return Auth::getTree(true);
     }
 
     /**
@@ -98,6 +134,92 @@ class rbacService extends BaseService
     public static function getRoleList($start = 0, $limit = 15)
     {
         return Role::getRoleList($start, $limit);
+    }
+
+    /**
+     * 获取菜单列表
+     */
+    public static function getAuthList($start = 0, $limit = 15)
+    {
+        return Auth::getAuthList($start, $limit);
+    }
+
+    /**
+     * 获取所有一级菜单
+     */
+    public static function getAllParent()
+    {
+        return Auth::getByType(Auth::AUTH_TYPE_FIRST, false);
+    }
+
+    /**
+     * 添加角色
+     */
+    public static function addRole($name, $authIds)
+    {
+        $roleId = Role::createRole($name);
+
+        if (!$roleId)
+        {
+            return false;
+        }
+
+        if(RoleAuth::createRoleAuths($roleId, $authIds))
+            return $roleId;
+
+        return false;
+    }
+
+    /**
+     * 修改角色
+     */
+    public static function updateRole($id, $name, $authIds)
+    {
+        if (Role::updateRole($id, $name))
+        {
+            if(RoleAuth::updateRoleAuth($id, $authIds))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * 添加一个权限
+     */
+    public static function addAuth($title, $url, $isMenu, $type, $parentId, $sort)
+    {
+        return Auth::createAuth($title, $url, $isMenu, $type, $parentId, $sort);
+    }
+
+    /**
+     * 修改权限
+     */
+    public static function updateAuth($id, $title, $url, $isMenu, $type, $parentId, $sort)
+    {
+        return Auth::updateAuth($id, $title, $url, $isMenu, $type, $parentId, $sort);
+    }
+
+    /**
+     * 删除权限
+     */
+    public static function deleteAuth($id)
+    {
+        DB::beginTransaction();
+        if (Auth::deleteAuth($id))
+        {
+            if (RoleAuth::deleteRoleAuthByAuth($id)) {
+                DB::commit();
+                return true;
+            }
+            DB::rollback();
+            return false;
+        }
+
+        Utils::errorLog('error delete auth error,maybe auth:'.$id.' not exist');
+        return false;
     }
 
     /**

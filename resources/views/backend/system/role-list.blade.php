@@ -10,7 +10,7 @@
                     <div class="icons">
                         <i class="fa fa-table"></i>
                     </div>
-                    <h5>管理员列表</h5>
+                    <h5>角色列表</h5>
                 </header>
                 <div id="collapse4" class="body">
                     <table id="dataTable" class="table table-bordered table-condensed table-hover table-striped">

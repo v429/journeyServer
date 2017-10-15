@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Services\AdminService;
 use App\Services\rbacService;
 use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\View;
 
