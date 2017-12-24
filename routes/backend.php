@@ -39,4 +39,3 @@ Route::group(['prefix' => 'backend'], function() {
 	Route::post('auth/del', 'Backend\SystemController@delAuth');
 });
 
-

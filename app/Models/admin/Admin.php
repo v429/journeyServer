@@ -74,7 +74,7 @@ class Admin extends BaseModel
         Utils::errorLog('add admin error in model', compact('name', 'password', 'email', 'roleId'));
         return false;
     }
-
+    
     /**
      * 修改管理员属性
      */
